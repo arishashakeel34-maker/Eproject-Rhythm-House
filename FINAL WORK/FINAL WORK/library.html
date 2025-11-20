@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Rhythm House — Library</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- AOS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+
+<style>
+:root {
+  --bg: #0b0014;             /* Deep violet-black background */
+  --panel: #140028;          /* Sidebar and panel tone */
+  --card: #1a0033;           /* Cards darker purple */
+  --accent: #a259ff;         /* Spotify-style purple accent */
+  --accent-light: #bb86fc;   /* Softer purple for hover */
+  --text: #ffffff;
+  --muted: #cfc2ff;
+  --border: rgba(162, 89, 255, 0.25);
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+   background-color: #0b0b0b;
+   color: #fff;
+}
+
+
+/* 🔹 Navbar */
+.navbar {
+  background: linear-gradient(90deg, rgba(15, 0, 35, 0.95), rgba(40, 0, 80, 0.9));
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+}
+.brand-accent {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* 🔹 Inputs */
+.form-control, .form-select {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.form-control::placeholder {
+  color: white;
+}
+.small-muted {
+  color: white;
+}
+
+
+/* 🔹 Sidebar */
+.left-sidebar {
+  position: fixed;
+  top: 70px;
+  left: 18px;
+  width: 260px;
+  bottom: 16px;
+  background: linear-gradient(180deg, rgba(162, 89, 255, 0.1), rgba(0, 0, 0, 0.4));
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  overflow: auto;
+}
+
+.sidebar-title {
+  color: var(--accent);
+  margin-bottom: .8rem;
+  font-weight: 700;
+}
+
+@media (max-width: 991px) {
+  .left-sidebar {
+    position: relative;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: auto;
+    margin-bottom: 16px;
+  }
+  .with-sidebar { margin-left: 0 !important; }
+}
+
+.main-area { margin-left: 300px; transition: margin-left .2s ease; }
+@media (max-width:991px){ .main-area{ margin-left: 0; } }
+
+/* 🔹 Accordion Buttons */
+.accordion-button {
+  background: transparent;
+  color: var(--text);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.accordion-button:hover {
+  background: rgba(162, 89, 255, 0.15);
+}
+.accordion-button:not(.collapsed) {
+  background: rgba(162, 89, 255, 0.25);
+  color: #fff;
+  box-shadow: inset 0 0 10px rgba(162, 89, 255, 0.3);
+}
+.accordion-body a {
+  color: var(--accent-light);
+}
+.accordion-body a:hover {
+  color: #fff;
+}
+.mb-0{
+  color: white;
+}
+
+/* 🔹 Cards (Spotify Style) */
+.card-spotify {
+  background: linear-gradient(180deg, var(--card), #0f0020);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.card-spotify:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(162, 89, 255, 0.25);
+}
+
+.cover-square {
+  width: 100%;
+  padding-top: 100%;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity .18s ease;
+  background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(162,89,255,0.4));
+}
+.card-spotify:hover .cover-overlay { opacity: 1; }
+
+.play-circle {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(162,89,255,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  box-shadow: 0 6px 18px rgba(162,89,255,0.3);
+}
+
+/* 🔹 Classic Cards */
+.bootstrap-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: transform .22s ease, box-shadow .22s ease;
+}
+.bootstrap-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 30px rgba(162, 89, 255, 0.25);
+}
+
+.badge-type {
+  background: rgba(162, 89, 255, 0.25);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: .78rem;
+}
+
+/* 🔹 Footer */
+footer {
+  margin-top: 24px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+  font-size: .9rem;
+}
+footer a.btn {
+  border-color: var(--accent);
+  color: #fff;
+}
+footer a.btn:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* 🔹 Buttons */
+.btn-outline-light {
+  border-color: var(--accent);
+  color: #fff;
+}
+.btn-outline-light:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* 🔹 Small Tweaks */
+.small.text-muted { color: var(--muted) !important; opacity: 0.9; }
+.bootstrap-card h6 { color: var(--accent-light); }
+
+[data-filter].active {
+  background-color: var(--accent) !important;
+  color: white !important;
+  border-color: var(--accent) !important;
+}
+/* 🔹 Ensure card titles are fully white in Spotify view */
+.card-spotify div[style*="font-weight:600"] {
+  color: #fff !important;
+}
+
+/* 🔹 Ensure Classic card titles are fully white */
+.bootstrap-card h6 {
+  color: #fff !important;
+}
+.btn.btn-sm.btn-outline-light.text-start {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.3rem; 
+}
+/* Navbar */
+    .navbar {
+      background-color: #111;
+      box-shadow: 0 2px 10px rgba(155, 89, 182, 0.4);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #fff !important;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+    .nav-link:hover, .dropdown-item:hover {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: scale(1.05);
+    }
+    .dropdown-menu {
+      background-color: #111;
+      border: none;
+      box-shadow: 0 5px 10px rgba(155, 89, 182, 0.3);
+    }
+    .dropdown-item {
+      color: #fff;
+      transition: 0.3s;
+    }
+
+/* Logo circle container with rotating light */
+.logo-ring {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(
+    from 0deg,
+    #9b59b6,
+    #ffffff,
+    #9b59b6,
+    #ffffff,
+    #9b59b6
+  );
+  animation: rotateLight 3s linear infinite;
+  padding: 3px; /* glowing ring thickness */
+}
+
+/* Inner image */
+.logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: black; /* so image edge blends cleanly */
+}
+
+/* Rotation animation */
+@keyframes rotateLight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Optional: make text slightly glowing */
+.navbar-brand span {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.8);
+}
+
+.main-search-section {
+  background-color: #140028;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+  margin-left: 300px; /* sidebar space */
+}
+
+@media (max-width: 991px) {
+  .main-search-section {
+    margin-left: 0; /* mobile full width */
+  }
+}
+
+/* Search input should take full width */
+.main-search-section .form-control {
+  flex: 1;
+}
+
+/* Small search button */
+.search-btn {
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 8px;
+}
+.search-btn i {
+  font-size: 16px;
+}
+
+</style>
+
+
+</head>
+<body>
+    
+     <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+     <a class="navbar-brand d-flex align-items-center" href="#">
+  <div class="logo-ring">
+    <img src="rlogo.jpg" alt="Rhythm House Logo" class="logo-img">
+  </div>
+  <span class="ms-2">Rhythm House</span>
+</a>
+
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Library</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Music</a></li>
+              <li><a class="dropdown-item" href="shop.html">Shop collection</a></li>
+              <li><a class="dropdown-item" href="shop.html">Books & Magazines</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="offers.html">Offers & Memberships</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Events</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="events.html">Live Shows</a></li>
+              <li><a class="dropdown-item" href="events.html">Contests</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    
+   <!-- search bar -->
+<!-- Search Bar -->
+<div class="main-search-section">
+  <div class="d-flex align-items-center gap-2">
+
+    <input id="searchInput" 
+           class="form-control" 
+           type="search" 
+           placeholder="Search by title, artist, year...">
+
+    <button id="searchBtn" class="btn search-btn">
+      <i class="fa fa-search"></i>
+    </button>
+
+    <div class="dropdown">
+      <a class="nav-link dropdown-toggle text-white" href="#" data-bs-toggle="dropdown">
+        🎶 Music Types
+      </a>
+    
+    </div>
+
+  </div>
+</div>
+
+
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="left-sidebar" aria-label="sidebar">
+    <div class="sidebar-title">🎧 Song Library</div>
+
+    <div class="mb-3">
+      <label class="form-label small text-muted">Media</label>
+      <select id="mediaSelect" class="form-select form-select-sm">
+        <option value="all">All (CD / DVD / Tape / Digital)</option>
+        <option value="cd">CD</option>
+        <option value="dvd">DVD</option>
+        <option value="tape">Tape</option>
+        <option value="digital">Digital</option>
+      </select>
+    </div>
+
+    <div class="accordion" id="artistsAccordion">
+      <div class="accordion-item bg-transparent border-0">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#pakistanList">🇵🇰 Pakistani Songs</button>
+        </h2>
+        <div id="pakistanList" class="accordion-collapse collapse" data-bs-parent="#artistsAccordion">
+          <div class="accordion-body">
+          <li><a href="#" class="text-decoration-none artist-link" data-artist="Atif Aslam">Atif Aslam</a></li>
+<li><a href="#" class="text-decoration-none artist-link" data-artist="Abida Parveen">Abida Parveen</a></li>
+<li><a href="#" class="text-decoration-none artist-link" data-artist="Hadiqa Kiani">Hadiqa Kiani</a></li>
+<li><a href="#" class="text-decoration-none artist-link" data-artist="Nusrat Fateh Ali Khan">Nusrat Fateh Ali Khan</a></li>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bg-transparent border-0">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#indianList">🇮🇳 Indian Songs</button>
+        </h2>
+        <div id="indianList" class="accordion-collapse collapse" data-bs-parent="#artistsAccordion">
+          <div class="accordion-body">
+           <div class="accordion-body">
+          <ul class="list-unstyled small">
+            <li><a href="#" class="text-decoration-none artist-link" data-artist="Arijit Singh">Arijit Singh</a></li>
+            <li><a href="#" class="text-decoration-none artist-link" data-artist="Anuv Jain">Anuv Jain</a></li>
+            <li><a href="#" class="text-decoration-none artist-link" data-artist="Karan Aujla">Karan Aujla</a></li>
+            <li><a href="#" class="text-decoration-none artist-link" data-artist="Shreya Ghoshal">Shreya Ghoshal</a></li>
+          </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="accordion-item bg-transparent border-0">
+        <h2 class="accordion-header">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#englishList"> English Songs</button>
+        </h2>
+        <div id="englishList" class="accordion-collapse collapse" data-bs-parent="#artistsAccordion">
+          <div class="accordion-body">
+             <ul class="list-unstyled small">
+        <li><a href="#" class="text-decoration-none artist-link" data-artist="Ed Sheeran">Ed Sheeran</a></li>
+        <li><a href="#" class="text-decoration-none artist-link" data-artist="Taylor Swift">Taylor Swift</a></li>
+        <li><a href="#" class="text-decoration-none artist-link" data-artist="Justin Bieber">Justin Bieber</a></li>
+        <li><a href="#" class="text-decoration-none artist-link" data-artist="Selena Gomez">Selena Gomez</a></li>
+      </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,0.03)">
+
+    <div class="mb-3">
+      <h6 class="small text-muted mb-1">Quick Filters</h6>
+      <div class="d-grid gap-2">
+        <button class="btn btn-sm btn-outline-light" data-filter-genre="70s">70s Songs</button>
+        <button class="btn btn-sm btn-outline-light" data-filter-genre="latest">Latest Hits</button>
+        <button class="btn btn-sm btn-outline-light" data-filter-genre="poems">Poems & Kids</button>
+       <a href="stats.html" class="btn btn-sm btn-outline-light text-start"><i class="bi bi-graph-up"></i> Statistics</a>
+    </div>
+      </div>
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,0.03)">
+
+    <div>
+      <h6 class="small text-muted mb-1">Membership</h6>
+      <p class="small text-muted">Enroll with a purchase of Rs. 200 to collect points and priority booking for live shows.</p>
+      <button class="btn btn-sm btn-outline-light w-100" id="learnMembership">Learn More</button>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+ <main class="main-area container-main">
+    <div class="row mb-3 align-items-center">
+      <div class="col-md-8">
+        <h3 class="mb-0">Library <small class="small-muted">— Albums & Collections</small></h3>
+        <div class="small text-muted">Browse CDs, DVDs, Tapes and digital collections</div>
+      </div>
+      <div class="col-md-4 text-md-end mt-3 mt-md-0">
+        <span class="small text-muted me-2">Show as:</span>
+        <div class="btn-group btn-group-sm" role="group">
+          <button class="btn btn-outline-light" id="spotifyViewBtn"><i class="fa fa-th-large"></i> PlayList</button>
+          <button class="btn btn-outline-light" id="classicViewBtn"><i class="fa fa-list"></i> Classic</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-3">
+    <div class="btn-group" role="group" aria-label="filters">
+  <button class="btn btn-outline-light btn-sm" data-filter="all">All</button>
+  <button class="btn btn-outline-light btn-sm" data-filter="movie">Movies</button>
+  <button class="btn btn-outline-light btn-sm" data-filter="poems">Poems</button>
+  <button class="btn btn-outline-light btn-sm" data-filter="solo">Solo</button>
+  <button class="btn btn-outline-light btn-sm" data-filter="band">Band</button>
+  <button class="btn btn-outline-light btn-sm" data-filter="cd">CD</button>
+  <button class="btn btn-outline-light btn-sm" data-filter="tape">Tape</button>
+</div>
+
+      <div class="float-end small text-muted">Results: <span id="resultsCount">0</span></div>
+    </div>
+
+    <div id="cardsWrapper" class="row gy-3"></div>
+  </main>
+<div class="modal fade" id="notAvailableModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content bg-dark text-light">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">❌ Not Available</h5>
+        <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center p-3">
+        <p class="mb-0">This item is not available right now. Please check back in a few days!</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- Footer -->
+  <footer class="mt-5 text-center small-muted">
+    <hr style="border-color:rgba(255,255,255,0.05)">
+    <strong>Rhythm House</strong><br>
+    <small>Address: Rhythm House Market • City • Phone: +92-XXX-XXXX</small>
+    <div class="mt-2">
+      <a class="btn btn-sm btn-outline-light me-1" href="https://open.spotify.com" target="_blank" rel="noreferrer">Spotify</a>
+      <a class="btn btn-sm btn-outline-light me-1" href="#" target="_blank" rel="noreferrer">YouTube</a>
+      <a class="btn btn-sm btn-outline-light" href="#" target="_blank" rel="noreferrer">Instagram</a>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+AOS.init({ once: true });
+
+
+const sampleArtists = [
+  'Atif Aslam','Arijit Singh','Taylor Swift','Selena Gomez','Justin Bieber',
+  'Shreya Ghoshal','Abida Parveen','Hadiqa Kiani','Ed Sheeran',
+  'Nusrat Fateh Ali Khan','Anuv Jain','Karan Aujla'
+];
+
+const artistImages = {
+  'Atif Aslam': ['atif1.jpeg','atif2.jpeg','atif3.jpeg','atif4.jpeg'],
+  'Arijit Singh': ['arjit1.jpeg','arjit2.jpeg','arjit3.jpeg','arjit4.jpeg'],
+  'Taylor Swift': ['taylo1.jpeg','taylor2.jpeg','taylor3.jpeg','taylor4.jpeg'],
+  'Selena Gomez': ['salena1.jpeg','salena2.jpeg','salena3.jpeg','salena4.jpeg'],
+  'Justin Bieber': ['justin1.jpeg','justin2.jpeg','justin3.jpeg','justin4.jpeg'],
+  'Shreya Ghoshal': ['shreya1.jpeg','shreya2.jpeg','shreya3.jpeg','shreya4.jpeg'],
+  'Abida Parveen': ['abida1.jpeg','abida2.jpeg','abida3.jpeg','abida4.jpeg'],
+  'Nusrat Fateh Ali Khan': ['nusrat1.jpeg','nusrat2.jpeg','nusrat3.jpeg','nusrat4.jpeg'],
+  'Ed Sheeran': ['ed1.jpeg','ed2.jpeg','ed3.jpeg','ed4.jpeg'],
+  'Hadiqa Kiani': ['hadiqa1.jpeg','hadiqa2.jpeg','hadiqa3.jpeg','hadiqa4.jpeg'],
+  'Karan Aujla': ['karan1.jpeg','karan2.jpeg','karan3.jpeg','karan4.jpeg'],
+  'Anuv Jain': ['anuv1.jpeg','anuv2.jpeg','anuv3.jpeg','anuv4.jpeg']
+};
+
+const spotifySamples = {
+  'Ed Sheeran — Collection 01': '7qiZfU4dY1lWllzX7mPBI3',
+  'Selena Gomez — Collection 02': '3RiPr603aXAoi4GHyXx0uy',
+  'Taylor Swift — Collection 03': '3Pkjr0I1xlc7gFQYJ7h6D2'
+};
+
+const categories = ['movie','band','solo'];
+const mediaTypes = ['cd','dvd','tape','digital'];
+const genres = ['70s','latest','poems','devotional','regional','pop','rock','classical'];
+
+
+
+// ✅ updated structure — array form (multiple audios per artist)
+const audioFiles = {
+  'Atif Aslam': [
+    'Ajnabi_Atif_Aslam.mp3',
+    'Woh Lamhe Woh Baatein (Lyrics Video) Atif Aslam Emraan Hashmi Zeher (2005) WorldFamousLyrics [TubeRipper.com].mp3'
+  ],
+  'Arijit Singh': [
+    'Kesariya - Film Version Brahmāstra Ranbir Alia Pritam Arijit Amitabh [TubeRipper.com].mp3',
+    'Full Song KHAIRIYAT (BONUS TRACK) CHHICHHORE Sushant Shraddha Pritam Amitabh BArijit Singh [TubeRipper.com].mp3'
+  ],
+  'Hadiqa Kiani': [
+    'Jaanay_Iss_Dil_Hadiqa_Kiani.mp3',
+    'Hadiqa Kiani Irfan Khan Janan Classic Pashto Song Official Video [TubeRipper.com].mp3'
+  ],
+  'Nusrat Fateh Ali Khan': [
+    'Afreen Afreen with lyrics Nusrat Fateh Ali Khan आफरन आफरन गन क बल नसरत फ़तह अल खन [TubeRipper.com].mp3',
+  ],
+  'Selena Gomez': [
+    'Selena Gomez - Come Get It [TubeRipper.com] (1).mp3',
+    'Selena Gomez - Come Get It [TubeRipper.com].mp3'
+  ],
+  'Shreya Ghoshal': [
+    'Sun Raha Hai Na Tu Female Version By Shreya Ghoshal Aashiqui 2 Full Video Song [TubeRipper.com].mp3'
+  ],
+  'Abida Parveen': [
+    'Tu Jhoom Abida Parveen 128 Kbps.mp3',
+    'Nara-e-Mastana---Abida-Parveen-Asrar.mp3'
+  ],
+  'Anuv Jain': [
+    'BAARISHEIN (Studio) Anuv Jain [TubeRipper.com].mp3',
+    'Anuv Jain - HUSN (Official Video) [TubeRipper.com].mp3'
+  ],
+  'Karan Aujla': [
+    'For A Reason (Official Video) Karan Aujla Tania Ikky Latest Punjabi Songs 2025 [TubeRipper.com].mp3',
+    'Wavy.mp3'
+  ],
+  'Taylor Swift': [
+    'Taylor Swift - Blank Space [TubeRipper.com].mp3',
+    'Taylor Swift - Love Story [TubeRipper.com].mp3'
+  ],
+  'Ed Sheeran': [
+    'Ed Sheeran - Shape of You (Official Music Video) [TubeRipper.com].mp3',
+    'Ed Sheeran - Perfect [TubeRipper.com].mp3'
+  ],
+  'Justin Bieber': [
+    'Justin Bieber - Peaches ft. Daniel Caesar Giveon [TubeRipper.com].mp3',
+    'Justin Bieber - Sorry (PURPOSE The Movement) [TubeRipper.com].mp3'
+  ]
+};
+
+// ✅ modify this items array generator:
+const items = Array.from({ length: 60 }, (_, i) => {
+  const artist = sampleArtists[i % sampleArtists.length];
+  const category = ['movie','band','solo'][i % 3];
+  const media = ['cd','dvd','tape','digital'][i % 4];
+  const year = 1970 + (i % 56);
+  const genre = ['70s','latest','poems','devotional','regional','pop','rock','classical'][i % 8];
+  const title = `${artist} — Collection ${String(i+1).padStart(2,'0')}`;
+  const images = artistImages[artist];
+  
+  // 🔹 condition: for Atif Aslam → only first 2 cards get songs
+  let audio = '';
+  if (artist === 'Atif Aslam') {
+    const idx = i % 4; // 0–3 for 4 cards
+    if (idx < 2) audio = audioFiles[artist][idx];
+  } else {
+    const list = audioFiles[artist] || [];
+    audio = list.length ? list[i % list.length] : '';
+  }
+
+  return {
+    id: i+1,
+    title,
+    artist,
+    category,
+    media,
+    year,
+    genre,
+    image: images[Math.floor(Math.random()*images.length)],
+    spotifyId: null,
+    audio
+  };
+});
+
+
+const poems = [
+  { id:201, title:'Whispers of the Night', artist:'Poem Collection', category:'poems', media:'digital', year:2022, genre:'poems', image:'whisper of night.jpeg', audio:'' },
+  { id:202, title:'Twinkle, Twinkle, Little Star', artist:'Poem Collection', category:'poems', media:'digital', year:2023, genre:'poems', image:'twinkle.jpeg', audio:'Twinkle-twinkle-Little-Star-Singing-Bell-Vocals-by-Sonia-Ter-Hovanessian.mp3' },
+  { id:203, title:'Baa, Baa, Black Sheep', artist:'Poem Collection', category:'poems', media:'digital', year:2024, genre:'poems', image:'baba.jpeg' },
+  { id:204, title:'Baby Shark', artist:'Poem Collection', category:'poems', media:'digital', year:2025, genre:'poems', image:'baby.jpeg', audio:'Baby Shark ｜ Animal Songs ｜ PINKFONG Songs for Children.mp3' }
+];
+
+const movies = [
+  { id:301, title:'Dilwale Dulhania Le Jayenge', artist:'Bollywood', category:'movie', media:'dvd', year:1995, genre:'romance', image:'dil walay.jpeg', audio:'Mere Khwabon Mein Dilwale Dulhania Le Jayenge 128 Kbps.mp3' },
+  { id:302, title:'Jawan', artist:'Bollywood', category:'movie', media:'dvd', year:2008, genre:'action', image:'JAWAN.jpeg',  },
+  { id:303, title:'12th Fail', artist:'Bollywood', category:'movie', media:'dvd', year:2014, genre:'drama', image:'12 FAIL.jpeg' },
+  { id:304, title:'Taare Zameen Par', artist:'Bollywood', category:'movie', media:'dvd', year:2019, genre:'inspirational', image:'taray.jpeg', audio:'Maa Taare Zameen Par 128 Kbps.mp3' }
+];
+
+
+items.push(...poems, ...movies);
+
+
+const state = {
+  currentView: 'spotify',
+  filteredItems: [...items]
+};
+
+const qs = sel => document.querySelector(sel);
+const qsa = sel => document.querySelectorAll(sel);
+const cardsWrapper = qs('#cardsWrapper');
+const resultsCount = qs('#resultsCount');
+
+const escapeHtml = s => String(s)
+  .replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function renderCards(list) {
+  cardsWrapper.innerHTML = '';
+  resultsCount.textContent = list.length;
+  if (!list.length) return;
+
+  const makeSpotifyCard = item => `
+    <div class="card-spotify" data-aos="fade-up">
+      <div class="cover-square" style="background-image:url('${item.image}');">
+        <div class="cover-overlay">
+          <div class="play-circle preview-btn" data-audio="${item.audio}" data-spotify="${item.spotifyId||''}">
+            <i class="fa fa-play"></i>
+          </div>
+        </div>
+      </div>
+      <div class="p-2">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div style="font-weight:600; font-size:.95rem;">${escapeHtml(item.title)}</div>
+            <div class="small text-muted">${escapeHtml(item.artist)} • ${item.year}</div>
+          </div>
+          <div><div class="badge-type">${item.media.toUpperCase()}</div></div>
+        </div>
+      </div>
+    </div>`;
+
+  const makeClassicCard = item => `
+    <div class="bootstrap-card d-flex p-3 align-items-center" data-aos="fade-up">
+      <div style="width:110px;height:110px;background-image:url('${item.image}');background-size:cover;background-position:center;border-radius:8px;"></div>
+      <div class="ps-3 w-100">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h6 class="mb-1">${escapeHtml(item.title)}</h6>
+            <div class="small text-muted">${escapeHtml(item.artist)} • ${item.year} • ${item.genre}</div>
+          </div>
+          <div class="text-end">
+            <div class="badge-type mb-2">${item.media.toUpperCase()}</div>
+            <div>
+              <button class="btn btn-sm btn-outline-light preview-btn" data-audio="${item.audio}" data-spotify="${item.spotifyId||''}">
+                <i class="fa fa-play me-1"></i>Preview
+              </button>
+              <button class="btn btn-sm btn-light ms-1 buy-btn">Buy</button>
+            </div>
+          </div>
+        </div>
+        <p class="small text-muted mt-2 mb-0">Category: ${item.category} • Genre: ${item.genre}</p>
+      </div>
+    </div>`;
+
+  list.forEach(item => {
+    const col = document.createElement('div');
+    col.className = state.currentView === 'spotify' ? 'col-6 col-md-4 col-lg-3' : 'col-12';
+    col.innerHTML = state.currentView === 'spotify' ? makeSpotifyCard(item) : makeClassicCard(item);
+    cardsWrapper.appendChild(col);
+  });
+
+  AOS.refreshHard();
+  attachPreviewListeners();
+}
+function applyFilters({ text = '', type = 'all', media = 'all', genre = '', artist = '' } = {}) {
+  let filtered = items.filter(i => {
+    const matchType = type === 'all' || i.category === type;
+    const matchMedia = media === 'all' || i.media === media;
+    const matchGenre = !genre || i.genre === genre;
+
+    const matchArtist = artist
+      ? i.artist.toLowerCase() === artist.toLowerCase()
+      : true;
+
+    const matchText =
+      !text ||
+      [i.title, i.artist].some(val =>
+        val.toLowerCase().includes(text.toLowerCase())
+      );
+
+    return matchType && matchMedia && matchGenre && matchArtist && matchText;
+  });
+
+  // Artist not found?
+  if (text) {
+    const exists = sampleArtists.some(a =>
+      a.toLowerCase() === text.toLowerCase()
+    );
+    if (!exists) {
+      new bootstrap.Modal(document.getElementById('notAvailableModal')).show();
+      return;
+    }
+  }
+
+  state.filteredItems = filtered;
+  renderCards(filtered);
+}
+
+
+ // ✅ <-- ye missing tha
+
+
+function ensureModalExists() {
+  if (!qs('#previewModal')) {
+    document.body.insertAdjacentHTML('beforeend', `
+      <div class="modal fade" id="previewModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+          <div class="modal-content bg-dark text-light">
+            <div class="modal-header border-0">
+              <h5 class="modal-title">🎧 Now Playing</h5>
+              <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center" id="previewContent"></div>
+          </div>
+        </div>
+      </div>`);
+  }
+}
+
+function attachPreviewListeners() {
+  qsa('.preview-btn').forEach(btn => btn.addEventListener('click', () => {
+    ensureModalExists();
+    const audioPath = btn.dataset.audio;
+    const spotifyId = btn.dataset.spotify;
+    let content = '<div class="p-3 small text-muted">No preview available</div>';
+    if (audioPath) {
+      content = `<audio controls autoplay style="width:100%;"><source src="${audioPath}" type="audio/mpeg"></audio>`;
+    } else if (spotifyId) {
+      content = `<iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/${spotifyId}" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media"></iframe>`;
+    }
+    qs('#previewContent').innerHTML = content;
+    new bootstrap.Modal(qs('#previewModal')).show();
+  }));
+}
+
+
+qs('#searchBtn').addEventListener('click', () => {
+  const userText = qs('#searchInput').value.trim().toLowerCase();
+
+  if (!userText) return applyFilters({});
+
+  // PARTIAL MATCH ALLOWED
+  const matchedArtist = sampleArtists.find(a =>
+    a.toLowerCase().includes(userText)
+  );
+
+  // If match found → filter by artist
+  if (matchedArtist) {
+    applyFilters({ artist: matchedArtist });
+  } 
+  else {
+    // NO match → show modal
+    document.querySelector("#notAvailableModal .modal-body").innerHTML = `
+      <h5>No Results Found</h5>
+      <p>Try different keywords like:</p>
+      <ul>
+        <li>Atif Aslam</li>
+        <li>Arijit Singh</li>
+        <li>Taylor Swift</li>
+        <li>Selena Gomez</li>
+      </ul>
+    `;
+    
+    new bootstrap.Modal(document.getElementById('notAvailableModal')).show();
+  }
+});
+
+
+qs('#mediaSelect').addEventListener('change', e =>
+  applyFilters({ media: e.target.value })
+);
+qsa('.artist-link').forEach(link =>
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    applyFilters({ artist: link.dataset.artist });
+  })
+);
+qs('#spotifyViewBtn').addEventListener('click', () => {
+  state.currentView = 'spotify';
+  renderCards(state.filteredItems);
+});
+qs('#classicViewBtn').addEventListener('click', () => {
+  state.currentView = 'classic';
+  renderCards(state.filteredItems);
+});
+
+// ✅ Filter Buttons Activation — all filters now fully functional
+
+qsa('[data-filter]').forEach(btn => {
+  btn.addEventListener('click', e => {
+    qsa('[data-filter]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filterType = btn.getAttribute('data-filter');
+
+    if (filterType === 'movie') {
+      applyFilters({ type: 'movie' });
+    } else if (filterType === 'poems') {
+      applyFilters({ type: 'poems' });
+    } else if (filterType === 'solo') {
+      applyFilters({ type: 'solo' });
+    } else if (filterType === 'band') {
+      // 🟣 Show Not Available modal for Band
+      new bootstrap.Modal(document.getElementById('notAvailableModal')).show();
+      return; 
+    } else if (filterType === 'cd') {
+      applyFilters({ media: 'cd' });
+    } else if (filterType === 'tape') {
+      applyFilters({ media: 'tape' });
+    } else {
+      applyFilters({ type: 'all' });
+    }
+  });
+});
+
+// ✅ Sidebar Quick Filters activation
+qsa('[data-filter-genre]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    qsa('[data-filter-genre]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const genre = btn.getAttribute('data-filter-genre');
+
+    if (genre === '70s') {
+      // 🔹 Show only 70s + old famous singers
+      applyFilters({ genre: '70s', artist: '' });
+    } else if (genre === 'latest') {
+      // 🔹 Latest hits → Anuv Jain songs only
+      applyFilters({ artist: 'Anuv Jain' });
+    } else if (genre === 'poems') {
+      // 🔹 Poems & Kids section
+      applyFilters({ type: 'poems' });
+    } else {
+      applyFilters({ type: 'all' });
+    }
+  });
+});
+
+
+
+
+
+renderCards(items);
+</script>
+
+
+</body>
+</html>

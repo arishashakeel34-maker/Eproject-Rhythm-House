@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rhythm House | Album Sales Stats</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* Rhythm House Theme */
+    body {
+      background-color: #0e0e10;
+      color: #e5e5e5;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+    }
+    .navbar {
+      background-color: #111;
+      box-shadow: 0 2px 10px rgba(155, 89, 182, 0.4);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #fff !important;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+    .nav-link:hover, .dropdown-item:hover {
+      background: linear-gradient(135deg, #9b59b6, #8e44ad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: scale(1.05);
+    }
+    .dropdown-menu {
+      background-color: #111;
+      border: none;
+      box-shadow: 0 5px 10px rgba(155, 89, 182, 0.3);
+    }
+    .dropdown-item {
+      color: #fff;
+      transition: 0.3s;
+    }
+
+/* Logo circle container with rotating light */
+.logo-ring {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(
+    from 0deg,
+    #9b59b6,
+    #ffffff,
+    #9b59b6,
+    #ffffff,
+    #9b59b6
+  );
+  animation: rotateLight 3s linear infinite;
+  padding: 3px; /* glowing ring thickness */
+}
+
+/* Inner image */
+.logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: black; /* so image edge blends cleanly */
+}
+
+/* Rotation animation */
+@keyframes rotateLight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Optional: make text slightly glowing */
+.navbar-brand span {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.8);
+}
+
+
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+      background: linear-gradient(135deg, #1b1b1f, #18141d);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .stat-h1 {
+      font-size: 2rem;
+      color: #b18bff;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+
+    .container-main {
+      padding: 2rem 5%;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .section-title {
+      color: #ffffff;
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      font-size: 1.4rem;
+      letter-spacing: 1px;
+      border-left: 3px solid #b18bff;
+      padding-left: 10px;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      background-color: #1a1a1d;
+      padding: 0.8rem;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-row:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 10px rgba(177, 139, 255, 0.25);
+    }
+
+    .month-label {
+      width: 90px;
+      font-weight: 500;
+      color: #b18bff;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+    }
+
+    .progress {
+      flex: 1;
+      height: 8px;
+      background-color: #2c2c33;
+      border-radius: 6px;
+      overflow: hidden;
+      margin: 0 10px;
+    }
+
+    .progress-bar {
+      background: linear-gradient(90deg, #8e4dff, #b18bff);
+      height: 100%;
+      border-radius: 6px;
+      transition: width 1s ease-out;
+    }
+
+    .count-badge {
+      width: 65px;
+      text-align: right;
+      font-weight: 600;
+      color: #f5f5f5;
+      font-size: 0.9rem;
+    }
+
+    .summary {
+      background: linear-gradient(145deg, #17171b, #1c1c21);
+      border-radius: 14px;
+      padding: 1.5rem;
+      margin-top: 2rem;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .summary h3 {
+      color: #b18bff;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .summary p {
+      font-size: 0.95rem;
+      color: #dcdcdc;
+      margin-bottom: 0.3rem;
+    }
+
+    .summary strong {
+      color: #b18bff;
+    }
+
+    @media (max-width: 768px) {
+      .month-label {
+        width: 75px;
+        font-size: 0.85rem;
+      }
+      .count-badge {
+        width: 55px;
+        font-size: 0.85rem;
+      }
+      .stat-h1 {
+        font-size: 1.7rem;
+      }
+    }
+
+    /* --- Album of the Month Section --- */
+.album-highlight {
+  background: linear-gradient(145deg, #17171b, #1b1b21);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-top: 2.5rem;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.35);
+}
+
+.highlight-title {
+  color: #b18bff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 1.8rem;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.album-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.album-image img {
+  width: 180px;
+  height: 180px;
+  border-radius: 14px;
+  object-fit: cover;
+  box-shadow: 0 0 20px rgba(177, 139, 255, 0.25);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-image img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(177, 139, 255, 0.4);
+}
+
+.album-info {
+  max-width: 400px;
+  text-align: left;
+}
+
+.album-name {
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+}
+
+.artist-name {
+  color: #b18bff;
+  font-size: 0.95rem;
+  margin-bottom: 0.8rem;
+}
+
+.album-desc {
+  color: #ccc;
+  font-size: 0.9rem;
+  margin-bottom: 1.2rem;
+  line-height: 1.5;
+}
+
+.btn-listen {
+  background: linear-gradient(90deg, #8e4dff, #b18bff);
+  border: none;
+  color: #fff;
+  padding: 0.6rem 1.3rem;
+  border-radius: 25px;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-listen:hover {
+  background: linear-gradient(90deg, #9b63ff, #c4a4ff);
+  transform: translateY(-2px);
+}
+
+.btn-listen i {
+  margin-right: 6px;
+}
+
+@media (max-width: 768px) {
+  .album-image img {
+    width: 150px;
+    height: 150px;
+  }
+  .album-info {
+    text-align: center;
+  }
+}
+
+  footer {
+      background: linear-gradient(135deg, #111, #1a1a1a, #222);
+      color: #ccc;
+      padding: 60px 0;
+      text-align: center;
+      border-top: 3px solid #a259ff;;
+      box-shadow: 0 -5px 20px rgba(155, 89, 182, 0.3);
+    }
+    footer a {
+      color:  #a259ff;;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.3rem;
+      transition: 0.3s;
+    }
+    footer a:hover {
+      color: #fff;
+      transform: scale(1.2);
+    }
+
+  </style>
+</head>
+
+<body>
+
+   <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+     <a class="navbar-brand d-flex align-items-center" href="#">
+  <div class="logo-ring">
+    <img src="rlogo.jpg" alt="Rhythm House Logo" class="logo-img">
+  </div>
+  <span class="ms-2">Rhythm House</span>
+</a>
+
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about-page">About Us</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Library</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="library.html">Music</a></li>
+              <li><a class="dropdown-item" href="shop.html">Shop collection</a></li>
+              <li><a class="dropdown-item" href="shop.html">Books & Magazines</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="offers.html">Offers & Memberships</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Events</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="events.html">Live Shows</a></li>
+              <li><a class="dropdown-item" href="events.html">Contests</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <header>
+    <h1 class="stat-h1">General Stats</h1>
+  </header>
+
+  <main class="container-main">
+    <h2 class="section-title text-center">Monthly Album Sales Statistics — 2025</h2>
+
+    <div class="row gx-4 gy-3">
+      <!-- Left column -->
+      <div class="col-md-6">
+        <div class="stat-row"><div class="month-label">Jan</div><div class="progress"><div class="progress-bar" data-percent="65" data-count="650"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Feb</div><div class="progress"><div class="progress-bar" data-percent="70" data-count="700"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Mar</div><div class="progress"><div class="progress-bar" data-percent="75" data-count="750"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Apr</div><div class="progress"><div class="progress-bar" data-percent="68" data-count="680"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">May</div><div class="progress"><div class="progress-bar" data-percent="80" data-count="800"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Jun</div><div class="progress"><div class="progress-bar" data-percent="83" data-count="830"></div></div><div class="count-badge">0</div></div>
+      </div>
+
+      <!-- Right column -->
+      <div class="col-md-6">
+        <div class="stat-row"><div class="month-label">Jul</div><div class="progress"><div class="progress-bar" data-percent="78" data-count="780"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Aug</div><div class="progress"><div class="progress-bar" data-percent="92" data-count="920"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Sep</div><div class="progress"><div class="progress-bar" data-percent="85" data-count="850"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Oct</div><div class="progress"><div class="progress-bar" data-percent="77" data-count="770"></div></div><div class="count-badge">0</div></div>
+        <div class="stat-row"><div class="month-label">Nov</div><div class="progress"><div class="progress-bar" data-percent="88" data-count="880"></div></div><div class="count-badge">0</div></div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <h3>Performance Summary</h3>
+      <p><strong>Total Albums Sold:</strong> <span id="total-sold">8,930</span></p>
+      <p><strong>Top Month:</strong> August (920 Albums)</p>
+      <p><strong>Growth Rate:</strong> +12% from previous quarter</p>
+    </div>
+  </main>
+
+  <!-- Album of the Month Section -->
+<section class="album-highlight mt-5">
+  <h3 class="highlight-title">Album of the Month</h3>
+  <div class="album-card">
+    <div class="album-image">
+      <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvTnofMf_dCAexuB8YgwSnzqBy5JMOE8XRLQ&s" alt="Album Cover">
+    </div>
+    <div class="album-info">
+      <h4 class="album-name">Love Yourself</h4>
+      <p class="artist-name">by <strong>BTS</strong></p>
+      <p class="album-desc">
+        A mesmerizing blend of pop, electro-pop and hiphop, varying in tone from confident and lively to reflective and cathartic.
+      </p>
+      <button class="btn-listen">
+        <i class="bi bi-play-circle"></i> Listen Now
+      </button>
+    </div>
+  </div>
+</section>
+  <!-- Footer -->
+  <footer data-aos="fade-up">
+    <p><strong>🎶 Rhythm House</strong> | Your City’s Music Destination</p>
+    <p>Email: info@rhythmhouse.com | Phone: +92-300-1234567</p>
+    <div>
+      <a href="https://www.facebook.com/"><i class="bi bi-facebook"></i></a>
+      <a href="https://www.instagram.com/"><i class="bi bi-instagram"></i></a>
+      <a href="https://x.com/"><i class="bi bi-twitter"></i></a>
+    </div>
+    <p class="mt-3 mb-0">&copy; 2025 Rhythm House. All rights reserved.</p>
+  </footer>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+  <script>
+    $(function () {
+      let statsAnimated = false;
+
+      function animateStats() {
+        if (statsAnimated) return;
+        statsAnimated = true;
+
+        $('.stat-row').each(function (i, el) {
+          const $bar = $(el).find('.progress-bar');
+          const $badge = $(el).find('.count-badge');
+          const percent = parseFloat($bar.data('percent')) || 0;
+          const countTarget = parseInt($bar.data('count')) || 0;
+          const delay = 120 * i;
+
+          $bar.css('width', '0%');
+
+          setTimeout(() => {
+            $bar.animate({ width: percent + '%' }, { duration: 1000, easing: 'swing' });
+          }, delay);
+
+          $({ val: 0 }).delay(delay).animate({ val: countTarget }, {
+            duration: 1000,
+            easing: 'swing',
+            step: function (now) {
+              $badge.text(Math.floor(now).toLocaleString());
+            },
+            complete: function () {
+              $badge.text(countTarget.toLocaleString());
+            }
+          });
+        });
+      }
+
+      function isInView(elem) {
+        const rect = elem.getBoundingClientRect();
+        return rect.top < window.innerHeight && rect.bottom > 0;
+      }
+
+      $(window).on('scroll resize', function () {
+        const statsSection = document.querySelector('.container-main');
+        if (isInView(statsSection)) {
+          animateStats();
+        }
+      });
+
+      // Trigger animation immediately if visible
+      if (isInView(document.querySelector('.container-main'))) animateStats();
+    });
+  </script>
+</body>
+</html>
+

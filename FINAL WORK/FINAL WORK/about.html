@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us | Rhythm House</title>
+
+  <!-- Fonts & Bootstrap -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" />
+
+  <!-- AOS Animation Library -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet" />
+
+
+  <style>
+     body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #0b0b0b;
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color: #111;
+      box-shadow: 0 2px 10px rgba(155, 89, 182, 0.4);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #fff !important;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+    .nav-link:hover, .dropdown-item:hover {
+      background: linear-gradient(135deg, #a259ff, #8e44ad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: scale(1.05);
+    }
+    .dropdown-menu {
+      background-color: #111;
+      border: none;
+      box-shadow: 0 5px 10px rgba(155, 89, 182, 0.3);
+    }
+    .dropdown-item {
+      color: #fff;
+      transition: 0.3s;
+    }
+
+/* Logo circle container with rotating light */
+.logo-ring {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(
+    from 0deg,
+    #a259ff,
+    #ffffff,
+    #a259ff,
+    #ffffff,
+    #a259ff
+  );
+  animation: rotateLight 3s linear infinite;
+  padding: 3px; /* glowing ring thickness */
+}
+
+/* Inner image */
+.logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: black; /* so image edge blends cleanly */
+}
+
+/* Rotation animation */
+@keyframes rotateLight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Optional: make text slightly glowing */
+.navbar-brand span {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.8);
+}
+    /* Hero Section */
+    .about-hero {
+       background: url('https://images.unsplash.com/photo-1487215078519-e21cc028cb29?q=80&w=1200') center/cover no-repeat; 
+      height: 45vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .about-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+    }
+
+    .about-hero-title {
+      position: relative;
+      font-size: 3rem;
+      font-weight: 700;
+      text-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
+    }
+
+    /* Circles Section */
+    .about-circles {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      margin-top: -3rem;
+      z-index: 2;
+      position: relative;
+    }
+
+    .about-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a259ff, #8e44ad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 600;
+      transition: all 0.4s ease;
+      box-shadow: 0 6px 20px rgba(128, 0, 255, 0.25);
+    }
+
+    .about-circle:hover {
+      transform: translateY(-8px);
+      background: linear-gradient(135deg, #a259ff, #9b59b6);
+    }
+
+    /* Intro Section */
+    .intro-section {
+      padding: 4rem 2rem;
+    }
+
+    .intro-badge {
+     background: linear-gradient(135deg, #a259ff, #8e44ad);
+      color: #fff;
+      padding: 0.4rem 0.7rem;
+      border-radius: 0.3rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    .intro-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 1rem;
+      color: #fff;
+    }
+
+    .intro-text {
+      color: #bdb8cc;
+      margin-top: 1rem;
+      max-width: 550px;
+      font-size: 1rem;
+    }
+
+/*  Intro image */
+    /* wrapper so glow is not clipped */
+.intro-image-spot {
+  width: 260px;
+  height: 260px;
+  margin: 2rem auto;
+  position: relative;          /* contains glow + image */
+  display: inline-block;
+  z-index: 1;
+  pointer-events: auto;
+}
+
+/* ambient glow element placed behind the image */
+.intro-glow {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 380px;                /* larger than image so glow extends */
+  height: 380px;
+  transform: translate(-50%, -50%) scale(1);
+  z-index: 1;
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(126,58,255,0.30), transparent 28%),
+    radial-gradient(circle at 70% 70%, rgba(234, 231, 233, 0.24), transparent 36%);
+  filter: blur(44px);
+  opacity: 0.65;
+  transition: transform 0.6s ease, opacity 0.35s ease, filter 0.35s ease;
+  will-change: transform, opacity;
+  animation: floatGlow 5s ease-in-out infinite;
+}
+
+/* the image container keeps rounded mask and clips the image only */
+.intro-image-box {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  z-index: 2;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.45);
+  transition: transform 0.35s ease;
+}
+
+/* image styling */
+.intro-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transform-origin: center center;
+  transition: transform 0.45s ease, filter 0.45s ease;
+  filter: saturate(0.98) contrast(1.03) brightness(0.95);
+}
+
+/* subtle hover interaction */
+.intro-image-spot:hover .intro-glow {
+  transform: translate(-50%, -50%) scale(1.08);
+  opacity: 0.85;
+  filter: blur(36px);
+}
+.intro-image-spot:hover .intro-image-box {
+  transform: scale(1.03);
+}
+.intro-image-spot:hover .intro-image {
+  transform: scale(1.04);
+  filter: saturate(1.02) contrast(1.05) brightness(1);
+}
+
+@keyframes floatGlow {
+  0% {
+    transform: translate(-52%, -52%) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translate(-48%, -50%) scale(1.05);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translate(-50%, -46%) scale(1);
+    opacity: 0.7;
+  }
+  75% {
+    transform: translate(-54%, -50%) scale(1.06);
+    opacity: 0.82;
+  }
+  100% {
+    transform: translate(-52%, -52%) scale(1);
+    opacity: 0.6;
+  }
+}
+
+    /* Mission/Vision Section */
+    .about-section-title {
+      text-align: center;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 5rem;
+      margin-top: 5rem;
+      position: relative;
+    }
+
+    .about-section-title::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -12px;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      border-radius: 2px;
+     background: linear-gradient(135deg, #a259ff, #8e44ad);
+    }
+
+    .about-card {
+      background-color: #18151f;
+      border: none;
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      height: 100%;
+      transition: transform 0.4s ease, background 0.4s ease;
+    }
+
+    .about-card:hover {
+      transform: translateY(-5px);
+      background-color: #201a2d;
+    }
+
+    .about-card i {
+      font-size: 2rem;
+      color: #a259ff;
+      margin-bottom: 1rem;
+    }
+
+    h2{
+      color: #e8dbff;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .about-card-text {
+      color: #a89ebc;
+      font-size: 0.95rem;
+    }
+
+    /* What makes us unique */
+    .unique-section {
+    color: #fff;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .unique-title {
+    font-weight: 700;
+    font-size: 2.3rem;
+    position: relative;
+  }
+
+  .unique-title::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 3px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #a259ff, #b26cff);
+  }
+
+  .unique-hover-card {
+    position: relative;
+    height: 220px;
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    background: linear-gradient(180deg, #1a1623, #12101b);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .unique-hover-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 22px rgba(126, 58, 255, 0.2);
+  }
+
+  .unique-card-front,
+  .unique-card-back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.2rem;
+    transition: all 0.5s ease;
+    text-align: center;
+  }
+
+  .unique-card-front {
+    background: linear-gradient(180deg, #201a2d, #16121f);
+  }
+
+  .unique-card-front h5 {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: #e3d7ff;
+    transition: opacity 0.4s ease;
+  }
+
+  .unique-card-back {
+    background: linear-gradient(180deg, #2a2140, #1a162b);
+    color: #bfb4d9;
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .unique-hover-card:hover .unique-card-front {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  .unique-hover-card:hover .unique-card-back {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .unique-card-back p {
+    font-size: 0.95rem;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+  .unique-card-front h5 {
+  font-weight: 600;
+  font-size: 1.2rem;
+background: linear-gradient(135deg, #a259ff, #8e44ad);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 4s linear infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* CTA Section */
+.cta-section {
+  margin-top: 4rem;
+  text-align: center;
+}
+
+.cta-box {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(80, 0, 180, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 25px rgba(120, 70, 255, 0.25);
+}
+
+.cta-box h5 {
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+}
+
+.cta-box p {
+  color: #bfb9d3;
+  margin-bottom: 1.2rem;
+}
+
+/* Buttons (CTA sec)*/
+.btn-browse {
+   background: linear-gradient(135deg, #a259ff, #8e44ad);
+  color: #fff !important;
+  border-radius: 12px;
+  padding: 0.7rem 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-browse:hover {
+  background: linear-gradient(90deg, #8e44ad, #a259ff);
+  transform: scale(1.04);
+}
+
+.btn-create {
+  border: 1px solid #bca9ff;
+  color: #e0d6ff !important;
+  border-radius: 12px;
+  padding: 0.7rem 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-create:hover {
+  background: rgba(160, 122, 255, 0.1);
+  border-color: #cbb5ff;
+  transform: scale(1.04);
+}
+
+/* Contact Section */
+.contact-section {
+  margin-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 1.5rem;
+}
+
+.contact-box {
+  color: #bfb9d3;
+}
+
+.contact-info .contact-title {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.contact-info small {
+  color: #9d96b8;
+}
+
+.contact-right {
+  font-size: 0.9rem;
+  color: #8d85a8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cta-box {
+    padding: 1.5rem;
+  }
+
+  .btn-browse,
+  .btn-create {
+    width: 100%;
+  }
+}
+
+/* How it started */
+.history-section {
+  padding: 4rem 0;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+}
+
+.badge-history {
+  display: inline-block;
+  background: rgba(120, 70, 255, 0.1);
+  color: #bfaaff;
+  padding: 0.35rem 0.8rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.history-title {
+  font-weight: 700;
+  color: #fff;
+  font-size: 1.7rem;
+  line-height: 1.4;
+}
+
+.history-text {
+  color: #bfb9d3;
+  font-size: 1rem;
+  max-width: 520px;
+}
+/* ================== Stats Boxes ================== */
+.stats-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.stat-card {
+  background: linear-gradient(145deg, rgba(126, 58, 255, 0.25), rgba(178, 108, 255, 0.15));
+  border: 1px solid rgba(178, 108, 255, 0.3);
+  border-radius: 14px;
+  padding: 1rem 2rem;
+  text-align: center;
+  min-width: 140px;
+  box-shadow: 0 4px 20px rgba(126, 58, 255, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(126, 58, 255, 0.25);
+}
+
+.stat-number {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.stat-label {
+  color: #c4b9e6;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+  font-weight: 500;
+}
+
+/* Center the stats within the text column */
+.intro-section .stats-wrapper {
+  justify-content: flex-start;
+}
+
+@media (max-width: 768px) {
+  .intro-section .stats-wrapper {
+    justify-content: center;
+  }
+}
+
+/* Image Style */
+.history-image {
+  width: 100%;
+  height: 320px;
+  border-radius: 16px;
+  background: url('https://images.unsplash.com/photo-1553194731-e7253cd148d9?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTl8fGNvbmNlcnR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600')
+              center/cover no-repeat;
+  box-shadow: 0 10px 30px rgba(90, 40, 200, 0.25);
+  transform: translateY(30px);
+  opacity: 0;
+  transition: all 1s ease;
+}
+
+/* Animation Trigger on Scroll */
+.history-section.visible .history-image {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.history-section.visible .history-title,
+.history-section.visible .history-text {
+  animation: fadeUp 0.8s ease forwards;
+}
+
+/* Fade-up keyframes */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .history-image {
+    height: 240px;
+  }
+  .history-title {
+    font-size: 1.4rem;
+  }
+}
+.icon{
+    font-size: 2rem;
+    margin-bottom: 0.4rem;
+}
+/* Footer */
+    footer {
+      background: linear-gradient(135deg, #111, #1a1a1a, #222);
+      color: #ccc;
+      padding: 60px 0;
+      text-align: center;
+      border-top: 3px solid #a259ff;
+      box-shadow: 0 -5px 20px rgba(155, 89, 182, 0.3);
+    }
+    footer a {
+      color: #a259ff;
+      text-decoration: none;
+      margin: 0 10px;
+      font-size: 1.3rem;
+      transition: 0.3s;
+    }
+    footer a:hover {
+      color: #fff;
+      transform: scale(1.2);
+    }
+
+  </style>
+</head>
+<body>
+ <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+     <a class="navbar-brand d-flex align-items-center" href="#">
+  <div class="logo-ring">
+    <img src="rlogo.jpg" alt="Rhythm House Logo" class="logo-img">
+  </div>
+  <span class="ms-2">Rhythm House</span>
+</a>
+
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#about-page">About Us</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Library</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="library.html">Music</a></li>
+              <li><a class="dropdown-item" href="shop.html">Shop collection</a></li>
+              <li><a class="dropdown-item" href="shop.html">Books & Magazines</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="offers.html">Offers & Memberships</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Events</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="events.html">Live Shows</a></li>
+              <li><a class="dropdown-item" href="events.html">Contests</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="about-hero" data-aos="fade-in">
+    <h1 class="about-hero-title">About Rhythm House</h1>
+  </section>
+
+  <!-- Circles -->
+  <section class="about-circles" data-aos="zoom-in" data-aos-delay="200">
+    <div class="about-circle">Experience</div>
+    <div class="about-circle">Variety</div>
+    <div class="about-circle">Fans</div>
+    <div class="about-circle">Events</div>
+  </section>
+
+  <!-- Intro -->
+  <section class="intro-section container" data-aos="fade-right">
+    <div class="row align-items-center">
+      <div class="col-md-7">
+        <span class="intro-badge">What we do</span>
+        <h2 class="intro-title">We bring the world’s music closer — tickets, tours, and unforgettable nights.</h2>
+        <p class="intro-text">
+          Rhythm House connects fans and artists through seamless concert experiences.
+          From underground gigs to world tours, we make discovering and booking music events, buying albums and finding music of your own taste effortless and exciting. From latest music to 60s and 70s rock albums, exploring different genres, Rhthym House serves to be the best platform for users trying to conncet with music, both national and international.
+        </p>
+
+        <div class="stats-wrapper">
+          <div class="stat-card">
+            <div class="stat-number">1.2M+</div>
+            <div class="stat-label">Tickets Sold</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number">4.8★</div>
+            <div class="stat-label">User Rating</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTRO IMAGE with animated ambient glow (replace previous .intro-image-box block) -->
+<div class="intro-image-spot" data-aos="fade-left">
+  <div class="intro-glow" aria-hidden="true"></div>
+
+  <div class="intro-image-box">
+    <img
+      class="intro-image"
+      src="https://plus.unsplash.com/premium_photo-1681335986095-5a9585e77246?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fG11c2ljfGVufDB8fDB8fHww&auto=format&fit=crop&q=60&w=500"
+      alt="A girl playing guitar"
+    />
+  </div>
+</div>
+
+    </div>
+  </section>
+
+  <!-- How It Started -->
+<section class="history-section mt-5" data-aos="fade-right">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6 mb-4 mb-md-0">
+        <div class="history-image"></div>
+      </div>
+      <div class="col-md-6">
+        <span class="badge-history">How It Started</span>
+        <h2 class="history-title mt-3">From local gigs to global stages — our journey through rhythm.</h2>
+        <p class="history-text mt-3">
+          Rhythm House was born from a small team of music lovers who believed live performances shouldn’t be out of reach. 
+          What started as a local ticketing idea for underground artists quickly grew into a worldwide network connecting fans and musicians. 
+          Our story is one of passion, technology, and the belief that music truly unites people.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Mission & Vision -->
+  <section class="my-5 container" data-aos="fade-up">
+    <h2 class="about-section-title">Our Mission & Vision</h2>
+    <div class="row g-4">
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="about-card text-center">
+          <i class="bi bi-bullseye"></i>
+          <h5 class="about-card-title">Mission</h5>
+          <p class="about-card-text">
+            To unite the world through music, empowering artists and elevating concert experiences for every fan.
+          </p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="about-card text-center">
+          <i class="bi bi-eye-fill"></i>
+          <h5 class="about-card-title">Vision</h5>
+          <p class="about-card-text">
+            To become the leading global platform for music lovers to discover, experience, and celebrate rhythm.
+          </p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="about-card text-center">
+          <i class="bi bi-heart-fill"></i>
+          <h5 class="about-card-title">Values</h5>
+          <p class="about-card-text">
+            Authenticity, creativity, and connection drive every note and every show we create.
+          </p>
+        </div>
+      </div>
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="about-card text-center">
+          <i class="bi bi-graph-up-arrow"></i>
+          <h5 class="about-card-title">Goals</h5>
+          <p class="about-card-text">
+            To host transformative events, discover new talent, and redefine how music is experienced.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What makes us unique -->
+<section class="unique-section py-5" data-aos="fade-up">
+  <div class="container text-center">
+    <h2 class="unique-title mb-5">What Makes Us Unique</h2>
+    <div class="row g-4 justify-content-center">
+
+      <!-- Card 1 -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="unique-hover-card">
+          <div class="unique-card-front">
+            <i class="icon bi bi-music-note-list"></i>
+            <h5>Passion for Sound</h5>
+          </div>
+          <div class="unique-card-back">
+            <p>Every beat we create, every melody we curate — it all comes from a deep passion for the art of sound.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="unique-hover-card">
+          <div class="unique-card-front">
+            <i class="icon bi bi-person-heart"></i>
+            <h5>Artist-Centered</h5>
+          </div>
+          <div class="unique-card-back">
+            <p>We celebrate and uplift artists — giving them the stage, the spotlight, and the audience they deserve.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="unique-hover-card">
+          <div class="unique-card-front">
+            <i class="icon bi bi-bar-chart-steps"></i>
+            <h5>Driven by Innovation</h5>
+          </div>
+          <div class="unique-card-back">
+            <p>We merge creativity with technology to craft experiences that redefine how the world enjoys live music.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section mt-5 text-center" data-aos="zoom-in">
+  <div class="cta-box p-4">
+    <h5>Ready to discover your next live show?</h5>
+    <p>Browse events or create an account — it's free and takes less than a minute.</p>
+    <div class="cta-buttons d-flex justify-content-center gap-3">
+      <a href="events.html" class="btn btn-browse">Browse Events</a>
+      <a href="offers.html" class="btn btn-create">Become a member</a>
+    </div>
+  </div>
+</section>
+
+ <!-- Footer -->
+  <footer data-aos="fade-up">
+    <p><strong>🎶 Rhythm House</strong> | Your City’s Music Destination</p>
+    <p>Email: info@rhythmhouse.com | Phone: +92-300-1234567</p>
+    <div>
+      <a href="#"><i class="bi bi-facebook"></i></a>
+      <a href="#"><i class="bi bi-instagram"></i></a>
+      <a href="#"><i class="bi bi-twitter"></i></a>
+    </div>
+    <p class="mt-3 mb-0">&copy; 2025 Rhythm House. All rights reserved.</p>
+  </footer>
+
+  <!-- Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS library -->
+   <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+
+  <script>
+document.addEventListener("scroll", () => {
+  document.querySelectorAll(".history-section").forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top < window.innerHeight - 100) {
+      section.classList.add("visible");
+    }
+  });
+});
+</script>
+ <script>
+    AOS.init({
+      duration: 1000,
+      once: true,
+      easing: 'ease-in-out',
+    });
+  </script>
+</body>
+</html>

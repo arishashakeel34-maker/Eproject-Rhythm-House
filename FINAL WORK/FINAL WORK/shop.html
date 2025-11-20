@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow Music Smooth Auto Carousel</title>
+
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    body {
+      background-color: #0b0b0b;
+      color:  #fff;
+      font-family: 'Poppins', sans-serif ;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    .navbar {
+      background-color:#111;
+      box-shadow:0 2px 10px rgba(155, 89, 182, 0.4);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-weight: 700;
+      font-size: 1.6rem;
+      letter-spacing: 1px;
+    }
+    .nav-link {
+      color: #fff !important;
+      margin-right: 10px;
+      transition: 0.3s;
+    }
+    .nav-link:hover, .dropdown-item:hover {
+      background:  linear-gradient(135deg, #a259ff, #8e44ad);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transform: scale(1.05);
+    }
+    .dropdown-menu {
+      background-color: #111;
+      border: none;
+      box-shadow: 0 5px 10px rgba(155, 89, 182, 0.3);
+    }
+    .dropdown-item {
+      color: #fff;
+      transition: 0.3s;
+    }
+
+/* Logo circle container with rotating light */
+.logo-ring {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(
+    from 0deg,
+    #9b59b6,
+     #ffffff,
+    #9b59b6,
+    #ffffff,
+    #9b59b6
+  );
+  animation: rotateLight 3s linear infinite;
+  padding: 3px; /* glowing ring thickness */
+}
+
+/* Inner image */
+.logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: black; /* so image edge blends cleanly */
+}
+/* Rotation animation */
+@keyframes rotateLight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Optional: make text slightly glowing */
+.navbar-brand span {
+  color: white;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(155, 89, 182, 0.8);
+}
+
+
+    /* Album Cards */
+    .album-card {
+      background: #1a0033;
+      border-radius: 15px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      border: rgba(162,89,255,0.25);
+    }
+
+    .album-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 25px rgba(119, 15, 164, 0.5);
+    }
+
+    .album-card img {
+      height: 200px;
+      width: 100%;
+      object-fit: cover;
+      border-bottom: 2px solid #a020f0;
+    }
+
+    .album-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-top: 10px;
+      color: #e0aaff;
+    }
+
+    .album-artist {
+      font-size: 0.9rem;
+      color: #d8b4fe;
+    }
+
+    h2 {
+      margin: 40px 0 20px;
+      font-weight: 600;
+      text-shadow: 0 0 10px #a020f0;
+    }
+
+    /* Smooth Auto Scroll Section */
+    .scroll-wrapper {
+      overflow: hidden;
+      position: relative;
+      white-space: nowrap;
+      margin-top: 30px;
+    }
+
+    .scroll-track {
+      display: inline-flex;
+      gap: 20px;
+      animation: scroll-left 35s linear infinite;
+    }
+
+    .small-card {
+      background: linear-gradient(145deg, #1a001a, #1a1a1a);
+      border-radius: 12px;
+      overflow: hidden;
+      width: 160px;
+      flex-shrink: 0;
+      border: 1px solid #5a189a;
+      transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
+    }
+
+    .small-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 25px rgba(119, 15, 164, 0.5);
+    }
+
+    .small-card img {
+      height: 120px;
+      width: 100%;
+      object-fit: cover;
+      border-bottom: 1px solid #7b2ff7;
+    }
+
+    .small-card p {
+      font-size: 0.85rem;
+      margin: 5px;
+      color: #ddd;
+    }
+
+    .btn-glow {
+      background-color:#a259ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      transition: box-shadow 0.3s;
+    }
+
+    .btn-glow:hover {
+      box-shadow: accent-light #bb86fc;
+      background-color: #762cd1;
+      
+    }
+
+    /* Modal Styling */
+    .modal-content {
+      background-color: #1a001a;
+      color: #e0aaff;
+      border: 1px solid #703fb9;
+      box-shadow: 0 0 25px #a020f0;
+    }
+
+    .form-control {
+      background-color: #2b0032;
+      border: 1px solid #9d4edd;
+      color: #fff;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 10px #a020f0;
+      border-color: #a020f0;
+    }
+
+    label {
+      color: #c77dff;
+    }
+
+    /* Smooth Scroll Animation */
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    :root{
+      background-color: #0b0014;
+    }
+
+    /* Headbar */
+    .shop-headbar {
+   background:#a259ff;
+   
+    border: 1px solid rgba(162, 0, 255, 0.3);
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(162, 0, 255, 0.2);
+    margin: 40px auto;
+    max-width: 900px;
+    padding: 40px 20px;
+  }
+
+  .shop-title {
+    font-size: 2.2rem;
+    color: White;
+    font-size: larger;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+  }
+
+  .shop-subtitle {
+    color: white;
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+  }
+ @media (max-width: 768px) {
+    .shop-headbar {
+      padding: 30px 15px;
+    }
+
+    .shop-title {
+      font-size: 1.8rem;
+    }
+
+    .shop-subtitle {
+      font-size: 0.95rem;
+    }
+  }  
+   h2{
+    justify-content: center; 
+    align-items: center; text-align: center;
+  }
+  .album-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.album-card img {
+  flex-shrink: 0;
+}
+
+.album-card .p-3 {
+  flex-grow: 1; /* makes all card bodies equal height */
+  display: flex;
+  flex-direction: column;
+}
+
+.album-card .btn-glow {
+  margin-top: auto; /* pushes buttons to bottom */
+}
+
+
+  </style>
+</head>
+
+<body>
+   <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
+     <a class="navbar-brand d-flex align-items-center" href="#">
+  <div class="logo-ring">
+    <img src="rlogo.jpg" alt="Rhythm House Logo" class="logo-img">
+  </div>
+  <span class="ms-2">Rhythm House</span>
+</a>
+
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Library</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="library.html">Music</a></li>
+              <li><a class="dropdown-item" href="shop.html">Shop collection</a></li>
+              <li><a class="dropdown-item" href="shop.html">Books & Magazines</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="offers.html">Offers & Memberships</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Events</a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Live Shows</a></li>
+              <li><a class="dropdown-item" href="events.html">Contests</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+<!-- Shop Headbar -->
+<section class="shop-headbar text-center py-5 mb-4" data-aos="fade-up">
+  <h1 class="shop-title">Explore Our Music Collection</h1>
+  <p class="shop-subtitle">Browse exclusive albums, CDs, and tapes — all in one place.</p>
+</section>
+
+
+  <div class="container py-4">
+    <h2>Best selling Albums on Rhythm house this month</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+      <!-- Album Card 1 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://a10.gaanacdn.com/gn_img/albums/VdNW0Mbo5e/dNW0doVQWo/size_m.jpg" alt="">
+          <div class="p-3">
+            <div class="album-title">Pehli Dafa</div>
+            <div class="album-artist">Atif Aslam</div>
+            <p>A romantic ballad, featuring a modern pop sound</p>
+            <p>Rs:899</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 2 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5zNE0Z-_CH_4wYNn132SCWVFkAzGb98xyiQ&s" alt="">
+          <div class="p-3">
+            <div class="album-title">Kana Yaari</div>
+            <div class="album-artist">Kaifi Khalil</div>
+            <p>A soulful blend of love, rhythm, and Balochi vibes</p>
+            <p>Rs:930</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 3 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5flhrG4UkwEtViMuw1dXJtCpvs5Z5KlqIaQ&s" alt="">
+          <div class="p-3">
+            <div class="album-title">Nit Khair Manga</div>
+            <div class="album-artist">Rahat Fateh Ali Khan</div>
+            <p>A calm rhythm for restless souls.</p>
+            <p>Rs.950</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 4 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://c.saavncdn.com/026/Ra-One-Hindi-2011-500x500.jpg" alt="">
+          <div class="p-3">
+            <div class="album-title">Chamak Challo</div>
+            <div class="album-artist">Kumar Sanu|Shreya G</div>
+            <p>Dance with sparkle and desi swag.</p>
+            <p>Rs.890</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Section for Albums -->
+    <h2 class="mt-5">Available Albums</h2>
+    <div class="scroll-wrapper">
+      <div class="scroll-track">
+        <div class="small-card">
+          <img src="https://i.ytimg.com/vi/83TubbmMcDg/hqdefault.jpg" alt="">
+          <p>Drama (OST)</p>
+          <p>Rs:599</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+        <!-- Repeat for more small-cards -->
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTValYV8MAgOeIj5Abp-mny7ht_iAhR689WzA&s"alt="">
+          <p>Mashup songs</p>
+          <p>Rs:499</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_bL1bT4myKyPk4ICA0eEbDNzLivtPsGUH0g&s"alt="">
+          <p>Ishq hai (OST)</p>
+          <p>Rs:775</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNHtyvRF_xGzUYf_jhJQuhf3JTWB6euCdIXw&s"
+            alt="">
+          <p>Funny and Entertaining</p>
+          <p>Rs:480</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU5uFbqu3eng4Mo0gD155aW4ZocT4DniGNPw&s"alt="">
+          <p>Romantic Song</p>
+          <p>Rs:699</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQsOUrGaNc6pXi9Ymab4Ksa1KGkisVAtHhHg&s"alt="">
+          <p>Old Song</p>
+          <p>Rs:790</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://c.saavncdn.com/934/Chocolate-From-Sangeetkaar--Hindi-2020-20200921230749-500x500.jpg"alt="">
+          <p>Virtual Vibes</p>
+          <p>rs:800</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGkAYmGzkNKF7u74FoqdJOdRTXwblNZ3ZMxg&s"alt="">
+          <p>English Song</p>
+          <p>Rs:760</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTT7GD-i16kJrDXCKU0wT1Szu0Q9dz2GwTRQ&s"
+            alt="">
+          <p>Rap Song</p>
+          <p>Rs:500</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+        <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRf8UXefNLNBtRSrH5NXJBsS0JTHxy2MHlMRw&s"alt="">
+         
+          <p>Naughty Song</p>
+          <p>Rs:700</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://c.saavncdn.com/696/Guli-Mata-Hindi-2023-20230714050721-500x500.jpg" alt="">
+            <p>Bangali Song</p>
+            <p>Rs:800</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Repeat similar sections for Books & Magazines, CDs & Tapes -->
+
+     <div class="container py-4">
+    <h2>Popular Books & Magazines</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+      <!-- Album Card 1 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://img2.od-cdn.com/ImageType-100/4575-1/%7B738996C8-ECC3-4BD0-B25C-ABE670BE2B23%7DIMG100.JPG"
+            alt="">
+          <div class="p-3">
+            <div class="album-title">Rolling Stone Mag </div>
+            <div class="album-artist">Rolling Stone</div>
+            <p>Explore the world of music, culture.</p>
+            <P>Rs:699</P>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 2 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://www.newsstand.co.uk/issueimages/535x745/2792774.jpg"
+            alt="">  
+          <div class="p-3">
+            <div class="album-title">Inspiring Reads </div>
+            <div class="album-artist">Newsstand Magazine</div>
+            <p>A visually captivating read, perfect for relaxation.</p>
+            <p>Rs:900</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 3 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjbztM-2bR-YUrB4aAkd_J8LNAoSEpPPKMDg&s"
+            alt="">  
+          <div class="p-3">
+            <div class="album-title"> A Little Life</div>
+            <div class="album-artist">Hanya Yanagihara</div>
+            <p>An emotionally powerful story exploring friendship.</p>
+
+            <p>Rs:799</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 4 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://www.newsstand.co.uk/issueimages/535x745/2803805.jpg" alt="">
+          <div class="p-3">
+            <div class="album-title">Night Circus</div>
+            <div class="album-artist">Magazines</div>
+            <p>A magical tale filled with adventures
+               to another world.</p>
+
+            <p>Rs:580</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Section for Albums -->
+    <h2 class="mt-5">Available Books and Magazines for You</h2>
+    <div class="scroll-wrapper">
+      <div class="scroll-track">
+        <div class="small-card">
+          <img src="https://www.billboard.com/wp-content/uploads/media/The-Pitchfork-Review-MIA-cover-billboard-1548.jpg?w=942&h=628&crop=1" alt="">
+          <p>Insights into music trends</p>
+          <p>Rs:800</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+        <!-- Repeat for more small-cards -->
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-L6pJLZdk-XO2CCmfDKcfE6dvP8bxBSS7FxZuKAreP2PG9bqKdWibTmmApqpcm94ZTXs&usqp=CAU" alt="">
+        <p>UK music magazine</p>
+          <p>Rs:700</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ_az4f_-mkkQXvN7uZk831HF5ynntkrG561y_Ze1cm_206Ed2drsARcC3aZ3TTQdPZHF4&usqp=CAU">
+        <p>Rock Music</p>
+          <p>Rs:999</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPFm5-DJCDYYcpLhfYZ-P9VqZ66A-BHwTHiU7F3yP3tUiYKyy70UhHlBJqvs_KhjwbMq4&usqp=CAU">
+        <p>Music covering trends</p>
+          <p>Rs:680</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS02NzFgFx-GGhr2cFqj3W63zkd9aEEOcer05mQT8lCcFvgC9KKulg1ukqGGcXctz749ow&usqp=CAU">
+        <p>music and pop culture</p>
+          <p>Rs:799</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrQq4z8qxqopeutmmZYFMAJPDslTWc_LWgOWWkVMGwPTH_5ke6xLNrkk5GI2c1s7I5huA&usqp=CAU">
+        <p>Music journalism magazine</p>
+          <p>Rs:850</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFN88wNT8bM59HzWizum-PsQW_Tiq3oj9juXW-cAdIXFQqYU-AYTICCFPej7Lt4g3Mw3Q&usqp=CAU">
+        <p>Indie music magazine</p>
+          <p>Rs:670</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqXhPDoQ19obYvC5a7Ots8HIWy6ggxyq3HoD7meaVnNstvS59eEXgdza9ZcYsvBW-pDQ0&usqp=CAU">
+        <p>Guitar-focused magazine</p>
+          <p>Rs:850</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9q18Hh8C1YSQsewBJCqncdyvzIvHjN6gS5_H3boaucjyd0b0AlQA6YgXewyIu2Dh_CSU&usqp=CAU">
+        <p>Alternative music magazine</p>
+          <p>Rs:499</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3gv5ef22pvp94pQLv9VYRjk1FkXYdkVwSpMG35fSapUKfnVq8JcahOFgq6ti2C-QeOcI&usqp=CAU">
+        <p>R&B and hip-hop culture.</p>
+             <p>Rs:770</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         
+         <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGOf7mheNoTwYbXvDiAOtC2MiAnzOBqg9egcshJ5ykJoUYXJASXVPf2EmdhYt4AeD0niA&usqp=CAU">
+        <p>Mixmag EDM & club</p>
+          <p>Rs:590</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+        </div>
+        </div>
+
+  </div>
+
+<div class="container py-4">
+    <h2>Best selling CDs and Tapes on Rhythm House</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+      <!-- Album Card 1 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTxuPl3jpnxOCPty1O6fuuSyDcDIq5vt-RE2e6eYGlZrGepVsSSG25G_jZohwFGPzHMwc&usqp=CAU"
+            alt="">
+          <div class="p-3">
+            <div class="album-title">Jhoom</div>
+            <div class="album-artist">Ali Zafar (pakistani)</div>
+            <p>Dreamy lo-fi beats that float like clouds.</p>
+            <p>Rs:775</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 2 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://i.ytimg.com/vi/JxKm_BKXTWQ/sddefault.jpg"
+            alt="">  
+          <div class="p-3">
+            <div class="album-title">The Letter I Never Sent </div>
+            <div class="album-artist">Sam Smith (UK)</div>
+            <p>Heartfelt songs about love left unsent.</p>
+            <p>Rs:599</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+     
+
+      <!-- Album Card 3 -->
+      <div class="col">
+        <div class="album-card text-center">
+          <img src="https://i.ytimg.com/vi/nTUYmfP_fXs/hqdefault.jpg"
+            alt="">  
+          <div class="p-3">
+            <div class="album-title">Shadows and Light</div>
+            <div class="album-artist">Arijit Singh (India)</div>
+            <p>Floating melodies with starry synth layers.</p>
+            <p>Rs:799</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Album Card 4 -->
+  <div class="col">
+        <div class="album-card text-center">
+          <img src="https://f4.bcbits.com/img/a3234437650_2.jpg" alt="">
+          <div class="p-3">
+            <div class="album-title">Dream Frequency</div>
+            <div class="album-artist">Lorde (New Zealand / English)</div>
+            <p>Ethereal sounds that shimmer like moonlight.</p>
+            <p>Rs:490</p>
+            <button class="btn btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+            <button class="btn btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll Section for Albums -->
+    <h2 class="mt-5">Available CDs and Tapes</h2>
+    <div class="scroll-wrapper">
+      <div class="scroll-track">
+        <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR05CNGGvEueSSg62ligxfTFXeFmXL0sD87lQ&s" alt="">
+          <p>Retro disco-inspired melodies for late-night vibes.</p>
+          <p>Rs:970</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+        <!-- Repeat for more small-cards -->
+
+         <div class="small-card">
+          <img src="https://i.ytimg.com/vi/QAm5Zh4hUpU/maxresdefault.jpg"alt="">
+          <p>vocals reflecting tender emotions.</p>
+          <p>Rs:780</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+         <div class="small-card">
+          <img src="https://admin.thecurrent.pk/media/uploads/2024/11/FEATURE-IMAGE-SIZENEW-2024-10-23T051148.071.jpg"alt="">
+          <p>Chillwave tunes reminiscent of Superstar</p>
+          <p>Rs:800</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+        <div class="small-card">
+          <img src="https://i.ytimg.com/vi/L0I2g2BYrFE/hqdefault.jpg" alt="">
+          <p>Dreamy pop tracks blurring reality and fantasy.</p>
+          <p>Rs:670</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+    
+        <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPyciJetmHWBJLXjrfKH20Z6NHXP7g7MkFOw&s"alt="">
+          <p>Indie melodies that heal the restless soul.</p>
+          <p>Rs:499</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+      
+        <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmVzusUEOD4Slm5Xn1VDvEZFD8YT5XiX3uVw2G6ad_hDfiKzO-Fup0ZoeyDZsfBk735iU&usqp=CAU"alt="">
+          <p>Deep beats paired with emotional storytelling.</p>
+          <p>Rs:750</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+      
+        <div class="small-card">
+          <img src="https://s1.dmcdn.net/v/ZMC5u1f1nJ7xYnbt6/x720"alt="">
+          <p>Feel-good tracks to complement evening skies.</p>
+          <p>Rs:950</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+       
+        <div class="small-card">
+          <img src="https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/bb/23/ee/bb23eeed-0c35-4f1d-2b11-485622777ae4/8902894353007_cover.jpg/1200x630bb.jpg"alt="">
+          <p>Bright pop beats with youthful energy.</p>
+          <p>Rs:599</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+         
+        <div class="small-card">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7Va_hvsW4iDN8EyqpVlNYepDBijS02yKUL3kAQwt1NpHLHCWcQjvg9KZce6Han_P6jn4&usqp=CAU"
+            alt="">
+          <p>Chill, melodic tunes for autumn reflection.</p>
+          <p>Rs:700</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+        <div class="small-card">
+          <img src="https://i.ytimg.com/vi/e8M8l1PocCc/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLBUkjpZpZHHLv9mMM98Nwti_Vdelw" alt="">
+             <p>pop with hints of mystery. </p>
+             <p>Rs:899</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+
+
+        <div class="small-card">
+          <img src="https://i.scdn.co/image/ab67616d0000b2731aa5adad8593923dcdf1a7d0" alt="">
+          <p>Deep beats paired with emotional storytelling.</p>
+          <p>Rs:550</p>
+          <button class="btn btn-sm btn-glow btn-buy" data-bs-toggle="modal" data-bs-target="#buyModal">Buy Now</button>
+          <button class="btn btn-sm btn-glow btn-cart" data-bs-toggle="modal" data-bs-target="#cartModal">Add to Cart</button>
+        </div>
+        </div>
+        </div>
+
+  </div>
+
+  <!-- Buy Modal -->
+  <div class="modal fade" id="buyModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Buy Item</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="name" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Enter your name">
+            </div>
+            <div class="mb-3">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email" placeholder="Enter your email">
+            </div>
+            <div class="mb-3">
+              <label for="payment" class="form-label">Payment Method</label>
+              <select id="payment" class="form-control">
+                <option selected disabled>Select Payment</option>
+                <option>Credit Card</option>
+                <option>JazzCash</option>
+                <option>EasyPaisa</option>
+                <option>PayPal</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-glow w-100">Confirm Purchase</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="modal fade" id="cartModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Your Cart</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="cartItems">
+          <p>No items in cart.</p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-glow" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-glow" id="checkoutBtn">Checkout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // CART FUNCTIONALITY
+    const cartItems = [];
+    const cartContainer = document.getElementById('cartItems');
+
+    // Add to Cart buttons
+    document.querySelectorAll('.btn-cart').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const card = e.target.closest('.album-card, .small-card');
+        const title = card.querySelector('.album-title').innerText;
+        const price = card.querySelector('p:nth-of-type(2)').innerText;
+
+        const exists = cartItems.find(item => item.title === title);
+        if (!exists) {
+          cartItems.push({ title, price });
+        }
+        renderCart();
+      });
+    });
+
+    // Render cart items
+    function renderCart() {
+      if (cartItems.length === 0) {
+        cartContainer.innerHTML = '<p>No items in cart.</p>';
+        return;
+      }
+      cartContainer.innerHTML = '';
+      cartItems.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.classList.add('d-flex', 'justify-content-between', 'mb-2', 'align-items-center');
+        div.innerHTML = `<span>${item.title} - ${item.price}</span>
+                         <button class="btn btn-sm btn-danger" onclick="removeFromCart(${index})">Remove</button>`;
+        cartContainer.appendChild(div);
+      });
+    }
+
+    function removeFromCart(index) {
+      cartItems.splice(index, 1);
+      renderCart();
+    }
+
+    document.getElementById('checkoutBtn').addEventListener('click', () => {
+      alert('Checkout successful! Thank you for your purchase.');
+      cartItems.length = 0;
+      renderCart();
+      const cartModal = bootstrap.Modal.getInstance(document.getElementById('cartModal'));
+      cartModal.hide();
+    });
+
+    // BUY NOW FORM VALIDATION
+    document.querySelectorAll('.modal-content form').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const name = this.querySelector('#name').value.trim();
+        const email = this.querySelector('#email').value.trim();
+        const payment = this.querySelector('#payment').value;
+
+        if (name === '' || email === '' || payment === 'Select Payment') {
+          alert('Please fill all fields correctly!');
+          return;
+        }
+
+        alert(`Thank you ${name}, your purchase is successful!`);
+        this.reset();
+        const buyModal = bootstrap.Modal.getInstance(this.closest('.modal'));
+        buyModal.hide();
+      });
+    });
+  </script>
+
+</body>
+</html>
